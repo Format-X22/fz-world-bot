@@ -1,0 +1,13 @@
+mixin navigation
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.sticky-top(style='margin-bottom: 40px')
+        a.navbar-brand(href='#') FZ World
+        button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Открыть меню')
+            span.navbar-toggler-icon
+        #navbarSupportedContent.collapse.navbar-collapse
+            ul.navbar-nav.mr-auto
+                li.nav-item.active
+                    a.nav-link(href="profile.html") Профиль
+                li.nav-item
+                    a.nav-link(href="search.html") Поиск
+                li.nav-item
+                    a.nav-link(href="join.html") Пригласить
