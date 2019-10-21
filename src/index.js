@@ -60,5 +60,5 @@ bot.on('message', msg => {
 });
 
 bot.on('callback_query', function onCallbackQuery(callbackQuery) {
-    bot.answerCallbackQuery(callbackQuery.id, { url: 'https://www.google.com/?client=safari' });
+    bot.answerCallbackQuery(callbackQuery.id, { url: 'https://fz-world-bot.herokuapp.com/' });
 });
