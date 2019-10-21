@@ -28,6 +28,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "express": "^4.17.1",
+    "node-telegram-bot-api": "^0.40.0",
     "pug": "^2.0.4"
   }
 }
