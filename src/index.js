@@ -1,62 +1,37 @@
-const pug = require('pug');
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 4000;
-const uiPath = __dirname + '/ui/pages/';
+const Main = require('./Main');
 
-app.use(express.static(__dirname + '/static'));
+const main = new Main();
 
-app.get('/', profile);
-app.get('/profile.html', profile);
-app.get('/editProfile.html', editProfile);
-app.get('/join.html', join);
-app.get('/search.html', search);
+main.init().catch(error => {
+    console.error(error);
+    process.exit(1);
+});
 
-app.listen(port, () => console.log(`On port ${port}!`));
-
-function profile(req, res) {
-    res.send(
-        pug.renderFile(`${uiPath}profile.pug`, {
-            name: 'Steve Jobs',
-            nick: '@steveJobs',
-            description: 'Играю в ФЗ 10 лет, люблю продукцию Apple!',
-        })
-    );
-}
-
-function editProfile(req, res) {
-    res.send(
-        pug.renderFile(page('editProfile'), {
-            description: 'Играю в ФЗ 10 лет, люблю продукцию Apple!',
-        })
-    );
-}
-
-function join(req, res) {
-    res.send(pug.renderFile(page('join'), {}));
-}
-
-function search(req, res) {
-    res.send(pug.renderFile(page('search'), {}));
-}
-
-function unregistered(req, res) {
-    res.send(pug.renderFile(page('unregistered'), {}));
-}
-
-function page(name) {
-    return `${uiPath}${name}.pug`;
-}
+return;
 
 const TelegramBot = require('node-telegram-bot-api');
 
 const bot = new TelegramBot(process.env.FZ_BOT_KEY, { polling: true });
 
 bot.on('message', msg => {
-    const chatId = msg.chat.id;
+    //const chatId = msg.chat.id;
 
-    // send a message to the chat acknowledging receipt of their message
-    bot.sendGame(chatId, 'fzWorldBot');
+    const chatId = msg.chat.id;
+    var user_profile = bot.getUserProfilePhotos(msg.from.id);
+    user_profile.then(function (res) {
+        var file_id = res.photos[0][0].file_id;
+        var file = bot.getFile(file_id);
+        file.then(function (result) {
+            var file_path = result.file_path;
+            var photo_url = `https://api.telegram.org/file/bot${process.env.FZ_BOT_KEY}/${file_path}`
+
+            console.log(photo_url);
+
+            //bot.sendMessage(chatId, photo_url);
+        });
+    });
+
+    //bot.sendGame(chatId, 'fzWorldBot');
 });
 
 bot.on('callback_query', function onCallbackQuery(callbackQuery) {
