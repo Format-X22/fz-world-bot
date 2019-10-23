@@ -27,7 +27,7 @@ class Main {
     }
 
     async _initDb() {
-        const client = await MongoClient.connect(process.env.FZ_DB_PATH || 'mongodb://localhost/');
+        const client = await MongoClient.connect(process.env.FZ_DB_PATH || 'mongodb://fz-world-mongo/');
 
         global.db = client.db(process.env.FZ_DB_NAME || 'admin');
     }

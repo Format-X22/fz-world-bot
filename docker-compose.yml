@@ -1,0 +1,39 @@
+version: '2.1'
+services:
+  fz-world-mongo:
+    container_name: fz-world-mongo
+    image: mongo
+    restart: always
+    healthcheck:
+      test: mongo --eval 'db.getCollectionNames()'
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    volumes:
+      - fz-world-mongo-vol:/data/db
+    ports:
+      - 27018:27017
+    networks:
+      - services-tier
+
+  fz-world-node:
+    container_name: fz-world-node
+    restart: always
+    depends_on:
+      fz-world-mongo:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - services-tier
+    ports:
+      - $FZ_HOST:$FZ_PORT:$FZ_PORT
+    env_file:
+      - .env
+
+volumes:
+  fz-world-mongo-vol:
+
+networks:
+  services-tier:
