@@ -8,6 +8,7 @@ const JoinController = require('./controllers/Join');
 const ProfileController = require('./controllers/Profile');
 const ReverseController = require('./controllers/Reverse');
 const SearchController = require('./controllers/Search');
+const AboutController = require('./controllers/About');
 const UnregisteredController = require('./controllers/Unregistered');
 
 class Main {
@@ -17,6 +18,7 @@ class Main {
         this._profileController = new ProfileController();
         this._reverseController = new ReverseController();
         this._searchController = new SearchController();
+        this._aboutController = new AboutController();
         this._unregisteredController = new UnregisteredController();
     }
 
@@ -27,7 +29,9 @@ class Main {
     }
 
     async _initDb() {
-        const client = await MongoClient.connect(process.env.FZ_DB_PATH || 'mongodb://fz-world-mongo/');
+        const client = await MongoClient.connect(
+            process.env.FZ_DB_PATH || 'mongodb://fz-world-mongo/'
+        );
 
         global.db = client.db(process.env.FZ_DB_NAME || 'admin');
     }
@@ -51,6 +55,8 @@ class Main {
 
         app.get('/reverse', this._reverseController.getPage.bind(this._reverseController));
         app.post('/reverse', this._reverseController.registerReverse.bind(this._reverseController));
+
+        app.get('/about', this._aboutController.getPage.bind(this._aboutController));
 
         app.get(
             '/unregistered',

@@ -1,0 +1,27 @@
+include ../elements/meta
+include ../elements/scripts
+include ../elements/navigation
+
+doctype html
+html(lang='ru')
+    head
+        +meta
+    body
+        +navigation
+
+        .container.mb-5
+            .row.justify-content-center
+                .col-10.text-center
+                    h3
+                        span От @oPavlov
+                        br
+                        span сообществу друзей
+
+                    hr
+
+                    img(src='photo.png' style='width: 100%; max-width: 350px;')
+
+                    hr
+
+                    a.btn.btn-primary(href='tg://resolve?domain=oPavlov') Написать
+        +scripts
