@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
-const port = process.env.PORT || 4000;
+const port = process.env.FZ_PORT || 4000;
 const ChatsController = require('./controllers/Chats');
 const JoinController = require('./controllers/Join');
 const ProfileController = require('./controllers/Profile');
@@ -95,7 +95,9 @@ class Main {
         });
 
         bot.on('callback_query', function onCallbackQuery(callbackQuery) {
-            bot.answerCallbackQuery(callbackQuery.id, { url: 'https://fz-world-bot.herokuapp.com/' });
+            bot.answerCallbackQuery(callbackQuery.id, {
+                url: 'https://http://ec2-13-59-75-149.us-east-2.compute.amazonaws.com',
+            });
         });
     }
 }
