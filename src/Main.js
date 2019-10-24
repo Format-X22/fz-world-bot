@@ -96,7 +96,7 @@ class Main {
 
         bot.on('callback_query', function onCallbackQuery(callbackQuery) {
             bot.answerCallbackQuery(callbackQuery.id, {
-                url: 'https://http://ec2-13-59-75-149.us-east-2.compute.amazonaws.com',
+                url: 'http://ec2-13-59-75-149.us-east-2.compute.amazonaws.com',
             });
         });
     }
