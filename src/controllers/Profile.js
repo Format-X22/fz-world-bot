@@ -3,7 +3,7 @@ const Abstract = require('./Abstract');
 class Profile extends Abstract {
     async getProfilePage(req, res) {
         // TODO -
-        const user = await global.db.collection('users').findOne({ nick: '@steveJobs' });
+        const user = await global.db.collection('users').findOne({ nick: '@oPavlov' });
 
         if (!user) {
             res.redirect('unregistered');

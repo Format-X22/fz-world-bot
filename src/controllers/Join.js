@@ -7,6 +7,8 @@ class Join extends Abstract {
 
     async handleJoin(req, res) {
         // TODO -
+
+        res.send(this.renderPage('join'));
     }
 }
 

@@ -12,14 +12,21 @@ html(lang='ru')
         .container
             .row
                 .col-12
-                    .input-group.mb-5
-                        input.form-control(type='text' placeholder='Пригласить по @nickname' aria-label='Пригласить по @nickname' aria-describedby="Пригласить по @nickname")
-                        .input-group-append
-                            button.btn.btn-primary(type='button') Пригласить
-                    p Вы можете пригласить любого пользователя Telegram.
-                    p Чтобы пользователь получил доступ к приложению он должен получить
-                        strong  миниму 3 приглашения
-                        |  от нынешних пользователей.
-                    p После этого пользователь появится в приложении автоматически.
+                    form(action='join' method='POST')
+                        .input-group.mb-5
+                            input.form-control(
+                                name='nick'
+                                type='text'
+                                placeholder='Пригласить по @nickname'
+                                aria-label='Пригласить по @nickname'
+                                aria-describedby='Пригласить по @nickname'
+                            )
+                            .input-group-append
+                                button.btn.btn-primary(type='submit') Пригласить
+                        p Вы можете пригласить любого пользователя Telegram.
+                        p Чтобы пользователь получил доступ к приложению он должен получить
+                            strong  миниму 3 приглашения
+                            |  от нынешних пользователей.
+                        p После этого пользователь появится в приложении автоматически.
 
         +scripts

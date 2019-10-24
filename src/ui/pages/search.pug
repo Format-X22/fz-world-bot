@@ -12,11 +12,18 @@ html(lang='ru')
         .container
             .row
                 .col-12
-                    .input-group.mb-5
-                        input.form-control(type='text' placeholder='Поиск по профилям' aria-label='Поиск по профилям' aria-describedby="Поиск по профилям")
-                        .input-group-append
-                            button.btn.btn-primary(type='button') Найти
+                    form(action='search' method='POST')
+                        .input-group.mb-5
+                            input.form-control(
+                                type='text'
+                                placeholder='Поиск по профилям'
+                                aria-label='Поиск по профилям'
+                                aria-describedby='Поиск по профилям'
+                            )
+                            .input-group-append
+                                button.btn.btn-primary(name='search' type='search') Найти
 
+        .container.d-none
             .row
                 .col-3
                     img.card.card-img.mb-1(src='https://specials-images.forbesimg.com/imageserve/5b8576db31358e0429c734e3/416x416.jpg?background=000000&cropX1=211&cropX2=2381&cropY1=900&cropY2=3072' style='max-width: 64px; max-height: 64px; display: inline-block;')

@@ -7,6 +7,7 @@ class Search extends Abstract {
 
     async search(req, res) {
         // TODO -
+        res.send(this.renderPage('search'));
     }
 }
 

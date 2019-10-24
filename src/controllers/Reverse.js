@@ -2,11 +2,17 @@ const Abstract = require('./Abstract');
 
 class Reverse extends Abstract {
     async getPage(req, res) {
-        res.send(this.renderPage('reverse'));
+        // TODO -
+        res.send(this.renderPage('reverse', {
+            registered: false
+        }));
     }
 
     async registerReverse(req, res) {
         // TODO -
+        res.send(this.renderPage('reverse', {
+            registered: true
+        }));
     }
 }
 

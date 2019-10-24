@@ -9,10 +9,10 @@ html(lang='ru')
     body
         +navigation
 
-        .container
+        .container.mb-5
             .row
                 .col-12.text-center
-                    img.card.card-img.mb-5(src='https://api.telegram.org/file/bot883991044:AAEymEzgxuDvyaH_EuC-QYzpJxvF5B8KpMs/photos/file_0.jpg' style='max-width: 256px; max-height: 256px; display: inline-block;')
+                    img.card.card-img.mb-4(src='https://api.telegram.org/file/bot883991044:AAEymEzgxuDvyaH_EuC-QYzpJxvF5B8KpMs/photos/file_0.jpg' style='max-width: 256px; max-height: 256px; display: inline-block;')
                     h5 #{name}
                     p.mb-3 #{nick}
                     p #{description}
@@ -23,19 +23,19 @@ html(lang='ru')
                 .col-6.text-right
                     strong Место работы
                 .col-6.text-left
-                    | None
+                    span #{job}
 
             .row.mb-2
                 .col-6.text-right
                     strong Семейное положение
                 .col-6.text-left
-                    | В активном поиске ;)
+                    span #{family}
 
             .row.mb-2
                 .col-6.text-right
                     strong Интересы
                 .col-6.text-left
-                    | Криптовалюты
+                    span #{interesting}
 
             hr.mb-4
 
