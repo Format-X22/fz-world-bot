@@ -68,7 +68,7 @@ class Main {
     }
 
     async _initTelegram() {
-        return;
+
 
         // TODO -
 
