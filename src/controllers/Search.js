@@ -6,6 +6,8 @@ class Search extends Abstract {
     }
 
     async search(req, res) {
+        const search = req.body.search;
+
         // TODO -
         res.send(this.renderPage('search'));
     }

@@ -42,7 +42,24 @@ class Reverse extends Abstract {
     }
 
     async _match() {
-        // TODO -
+        const users = await global.db.collection('users').find({ registeredInReverse: true });
+
+        if (!users.length) {
+            return;
+        }
+
+        let left = null;
+
+        for (const user of users) {
+            if (!left) {
+                left = user;
+                continue;
+            }
+
+            // TODO Pair
+        }
+
+        // TODO Broadcast
     }
 
     _remainedToNextDay() {

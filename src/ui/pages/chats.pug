@@ -12,7 +12,7 @@ mixin chat(name, link)
             strong!=name
         .col-1
         .col-3.text-left
-            a(href=link).btn.btn-primary >>
+            button(type='submit' name=link).btn.btn-primary >>
 
 doctype html
 html(lang='ru')
@@ -21,40 +21,43 @@ html(lang='ru')
     body
         +navigation
 
-        .container.mb-5
-            .row
-                .col-12.text-center
-                    h2 Список чатов
 
-            +chat('Главный инфо-канал<br>Секретные движухи для Мск', 'tg://join?invite=AAAAAFUytCiRPs20XAFPNA')
-            +chat('Главный Московский чат', 'tg://join?invite=DaoDs1EohtxvD193HqXUEQ')
-            +chat('Настолки', 'tg://join?invite=C5MRAxGCP9svqw8RFbal7g')
-            +chat('Настолки на Тульской', 'tg://join?invite=LYliMhY4m59tPXUuNC6o_A')
-            +chat('Геймеры', 'tg://join?invite=CM44pheeCDyvz3k7yxZyLg')
-            +chat('Геймеры онлайн', 'tg://join?invite=ABaXkQ2cSeE8EtiwNlWDPg')
-            +chat('Лес, палатка, котелок', 'tg://join?invite=DIt_tgxVOAhnhdOhW8qLvQ')
-            +chat('Походы', 'tg://join?invite=BKEHWUZ10T3pp8JEA2f9lg')
-            +chat('Вдоль и поперек<br>(веток метро)', 'tg://resolve?domain=vdol_i_poperek_Msk')
-            +chat('Клуб английского', 'tg://join?invite=DLoVPRT6tP_dl9fYYdRcnQ')
-            +chat('IT сообщество', 'tg://join?invite=CQGbFRdDxMeITB75U5gs1g')
-            +chat('Финансы', 'tg://resolve?domain=fzfinance')
-            +chat('Арт-вылазки', 'tg://join?invite=GCt9thBj8EmdNrLIAvaMRw')
-            +chat('Рисуем с Олькой', 'tg://resolve?domain=artwithme')
-            +chat('Книжный чат', 'tg://join?invite=CXrH404-kA9tl48RkBineQ')
-            +chat('Караоке', 'tg://join?invite=B0-mxBFaXujoquEmBZWiuw')
-            +chat('Танцы', 'tg://resolve?domain=fz_dance')
-            +chat('Кино', 'tg://join?invite=CM44plZ6hp2O7nvDNwdSDQ')
-            +chat('Театр', 'tg://join?invite=E58dwA1ttPIZlDbuK2XOrw')
-            +chat('Пейнтбол', 'tg://join?invite=MgZCORZiF-U3FNGUcUpSnw')
-            +chat(
-                'Winesday<br>Домашние посиделки с вином<br>и кулинарные баттлы',
-                'https://t.me/joinchat/CziialAV8KKCikcDVOX32g'
-            )
-            +chat('FridayTrip<br>пЪятница в любой день недели', 'tg://join?invite=CXrH405vLNG_6bc6iCLhxQ')
-            +chat('TEST', 'http://google.com')
-            +chat('TEST2', 'https://teleg.run/joinchat/CziialAV8KKCikcDVOX32g')
+        if send
+            .container
+                .row
+                    .col-12
+                        .card.card-body
+                            p.text-center.mb-0 Ссылка отправлена вам в сообщении...
+        else
+            form.container.mb-5(action='chats' method='POST')
+                .row
+                    .col-12.text-center
+                        h2 Список чатов
 
-            a(onclick='window.open(\'tg://join?invite=CXrH405vLNG_6bc6iCLhxQ\', \'_blank\');') TEST3
-            a(onclick='location.href=\'tg://join?invite=CXrH405vLNG_6bc6iCLhxQ\';') TEST4
+                +chat('Главный инфо-канал<br>Секретные движухи для Мск', 'tg://join?invite=AAAAAFUytCiRPs20XAFPNA')
+                +chat('Главный Московский чат', 'tg://join?invite=DaoDs1EohtxvD193HqXUEQ')
+                +chat('Настолки', 'tg://join?invite=C5MRAxGCP9svqw8RFbal7g')
+                +chat('Настолки на Тульской', 'tg://join?invite=LYliMhY4m59tPXUuNC6o_A')
+                +chat('Геймеры', 'tg://join?invite=CM44pheeCDyvz3k7yxZyLg')
+                +chat('Геймеры онлайн', 'tg://join?invite=ABaXkQ2cSeE8EtiwNlWDPg')
+                +chat('Лес, палатка, котелок', 'tg://join?invite=DIt_tgxVOAhnhdOhW8qLvQ')
+                +chat('Походы', 'tg://join?invite=BKEHWUZ10T3pp8JEA2f9lg')
+                +chat('Вдоль и поперек<br>(веток метро)', 'tg://resolve?domain=vdol_i_poperek_Msk')
+                +chat('Клуб английского', 'tg://join?invite=DLoVPRT6tP_dl9fYYdRcnQ')
+                +chat('IT сообщество', 'tg://join?invite=CQGbFRdDxMeITB75U5gs1g')
+                +chat('Финансы', 'tg://resolve?domain=fzfinance')
+                +chat('Арт-вылазки', 'tg://join?invite=GCt9thBj8EmdNrLIAvaMRw')
+                +chat('Рисуем с Олькой', 'tg://resolve?domain=artwithme')
+                +chat('Книжный чат', 'tg://join?invite=CXrH404-kA9tl48RkBineQ')
+                +chat('Караоке', 'tg://join?invite=B0-mxBFaXujoquEmBZWiuw')
+                +chat('Танцы', 'tg://resolve?domain=fz_dance')
+                +chat('Кино', 'tg://join?invite=CM44plZ6hp2O7nvDNwdSDQ')
+                +chat('Театр', 'tg://join?invite=E58dwA1ttPIZlDbuK2XOrw')
+                +chat('Пейнтбол', 'tg://join?invite=MgZCORZiF-U3FNGUcUpSnw')
+                +chat(
+                    'Winesday<br>Домашние посиделки с вином<br>и кулинарные баттлы',
+                    'https://t.me/joinchat/CziialAV8KKCikcDVOX32g'
+                )
+                +chat('FridayTrip<br>Пятница в любой день недели', 'tg://join?invite=CXrH405vLNG_6bc6iCLhxQ')
 
         +scripts

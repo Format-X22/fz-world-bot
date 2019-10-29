@@ -2,8 +2,7 @@ const Abstract = require('./Abstract');
 
 class Profile extends Abstract {
     async getProfilePage(req, res) {
-        // TODO -
-        const user = await global.db.collection('users').findOne({ nick: '@oPavlov' });
+        const user = await this.extractUser(req);
 
         if (!user) {
             res.redirect('unregistered');
@@ -14,15 +13,23 @@ class Profile extends Abstract {
     }
 
     async getEditPage(req, res) {
-        res.send(
-            this.renderPage('editProfile', {
-                description: 'Играю в ФЗ 10 лет, люблю продукцию Apple!',
-            })
-        );
+        const user = await this.extractUser(req);
+
+        res.send(this.renderPage('editProfile', user));
     }
 
     async edit(req, res) {
-        // TODO -
+        const user = await this.extractUser(req);
+        const { description, job, family, interesting } = req.body || {};
+
+        await global.db.collection('users').updateOne({
+            description,
+            job,
+            family,
+            interesting,
+        });
+
+        res.send(this.renderPage('profile', user));
     }
 }
 
