@@ -13,20 +13,39 @@ html(lang='ru')
             .row
                 .col-12
                     form(action='join' method='POST')
-                        .input-group.mb-5
-                            input.form-control(
-                                name='nick'
-                                type='text'
-                                placeholder='Пригласить по @nickname'
-                                aria-label='Пригласить по @nickname'
-                                aria-describedby='Пригласить по @nickname'
-                            )
-                            .input-group-append
-                                button.btn.btn-primary(type='submit') Пригласить
-                        p Вы можете пригласить любого пользователя Telegram.
-                        p Чтобы пользователь получил доступ к приложению он должен получить
-                            strong  миниму 3 приглашения
-                            |  от нынешних пользователей.
-                        p После этого пользователь появится в приложении автоматически.
+                        if alreadyActive
+                            .card.card-body.text-center
+                                h5.mb-0 Пользователь уже приглашен!
+
+                        else if alreadyActiveByUser
+                            .card.card-body.text-center
+                                h5.mb-0 Пользователь уже приглашен вами!
+
+                        else if success
+                            .card.card-body
+                                h4 Пользователь приглашен!
+
+                                if active
+                                    p И активирован! Теперь он может пользоваться приложением.
+                                else
+                                    p Для того чтобы пользователь смог пользоваться приложением ему нужно
+                                        strong  ещё #{requiresNeeded}
+                                        span  приглашений.
+                        else
+                            .input-group.mb-5
+                                input.form-control(
+                                    name='nick'
+                                    type='text'
+                                    placeholder='Пригласить по @nickname'
+                                    aria-label='Пригласить по @nickname'
+                                    aria-describedby='Пригласить по @nickname'
+                                )
+                                .input-group-append
+                                    button.btn.btn-primary(type='submit') Пригласить
+                            p Вы можете пригласить любого пользователя Telegram.
+                            p Чтобы пользователь получил доступ к приложению он должен получить
+                                strong  миниму 3 приглашения
+                                |  от нынешних пользователей.
+                            p После этого пользователь появится в приложении автоматически.
 
         +scripts
