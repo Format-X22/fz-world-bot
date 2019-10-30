@@ -12,9 +12,9 @@ html(lang='ru')
         .container.mb-5
             .row
                 .col-12.text-center
-                    img.card.card-img.mb-4(src='avatar/' + user.username + '.jpеg' style='max-width: 256px; max-height: 256px; display: inline-block;')
+                    img.card.card-img.mb-4(src='avatar/' + user.username + '.jpeg' style='max-width: 256px; max-height: 256px; display: inline-block;')
                     h5 #{user.fullName}
-                    p.mb-3 #{user.username}
+                    p.mb-3 @#{user.username}
 
                     if user.description
                         p #{user.description}
