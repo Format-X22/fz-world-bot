@@ -111,7 +111,7 @@ class Main {
             const token = jwt.sign(callbackQuery.from, process.env.FZ_BOT_KEY);
 
             await bot.answerCallbackQuery(callbackQuery.id, {
-                url: `http://ec2-13-59-75-149.us-east-2.compute.amazonaws.com/token=${token}`,
+                url: `http://ec2-13-59-75-149.us-east-2.compute.amazonaws.com/?token=${token}`,
             });
         });
     }
