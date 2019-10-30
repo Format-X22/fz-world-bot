@@ -83,14 +83,14 @@ class Main {
                 .findOne({ username: msg.from.username });
 
             if (user) {
-                if (!fs.existsSync(__dirname + '/static/avatar/' + user.username + '.jpg')) {
+                if (!fs.existsSync(__dirname + '/static/avatar/' + user.username + '.jpeg')) {
                     const res = await bot.getUserProfilePhotos(msg.from.id);
                     const file = await bot.getFile(res.photos[0][1].file_id);
                     const path = file.file_path;
                     const key = process.env.FZ_BOT_KEY;
                     const data = await fetch(`https://api.telegram.org/file/bot${key}/${path}`);
                     const to = fs.createWriteStream(
-                        __dirname + '/static/avatar/' + user.username + '.jpg'
+                        __dirname + '/static/avatar/' + user.username + '.jpeg'
                     );
 
                     data.body.pipe(to);
