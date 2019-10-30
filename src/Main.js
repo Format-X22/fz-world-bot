@@ -30,6 +30,7 @@ class Main {
         await this._initDb();
         await this._initWeb();
         await this._initTelegram();
+        await this._initSuperAdmin();
     }
 
     async _initDb() {
@@ -81,17 +82,26 @@ class Main {
                 .collection('users')
                 .findOne({ username: msg.from.username });
 
-            if (user && !fs.existsSync(__dirname + '/static/avatar/' + user.username + '.jpg')) {
-                const res = await bot.getUserProfilePhotos(msg.from.id);
-                const file = await bot.getFile(res.photos[0][1].file_id);
-                const path = file.file_path;
-                const key = process.env.FZ_BOT_KEY;
-                const data = await fetch(`https://api.telegram.org/file/bot${key}/${path}`);
-                const to = fs.createWriteStream(
-                    __dirname + '/static/avatar/' + user.username + '.jpg'
-                );
+            if (user) {
+                if (!fs.existsSync(__dirname + '/static/avatar/' + user.username + '.jpg')) {
+                    const res = await bot.getUserProfilePhotos(msg.from.id);
+                    const file = await bot.getFile(res.photos[0][1].file_id);
+                    const path = file.file_path;
+                    const key = process.env.FZ_BOT_KEY;
+                    const data = await fetch(`https://api.telegram.org/file/bot${key}/${path}`);
+                    const to = fs.createWriteStream(
+                        __dirname + '/static/avatar/' + user.username + '.jpg'
+                    );
 
-                data.body.pipe(to);
+                    data.body.pipe(to);
+                }
+
+                await global.db
+                    .collection('users')
+                    .updateOne(
+                        { username: msg.from.username },
+                        { $set: { fullName: [msg.from.first_name, msg.from.last_name].join(' ') } }
+                    );
             }
 
             await bot.sendGame(chatId, 'fzWorldBot');
@@ -149,6 +159,26 @@ class Main {
             return { ...user, token };
         } else {
             return null;
+        }
+    }
+
+    async _initSuperAdmin() {
+        const user = await global.db.collection('users').findOne({ username: 'oPavlov' });
+
+        if (!user) {
+            await global.db.collection('users').insertOne({
+                username: 'oPavlov',
+                requires: 0,
+                active: true,
+                requiredBy: [],
+                registeredInReverse: false,
+                fullName: '',
+                description: '',
+                job: '',
+                family: '',
+                interesting: '',
+                avatar: '',
+            });
         }
     }
 }

@@ -30,7 +30,7 @@ class Join extends Abstract {
             return;
         }
 
-        if (user.requiredBy.includes(currentUser.username)) {
+        if (user.requiredBy.includes(currentUser.username) && currentUser.username !== 'oPavlov') {
             res.send(this.renderPage('join', { alreadyActiveByUser: true, user: req.user }));
             return;
         }
