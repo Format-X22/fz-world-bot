@@ -92,7 +92,7 @@ class Main {
                         const key = process.env.FZ_BOT_KEY;
                         const data = await fetch(`https://api.telegram.org/file/bot${key}/${path}`);
                         const to = fs.createWriteStream(
-                            __dirname + '/static/avatar/' + 'x' + '.jpeg'
+                            __dirname + '/static/avatar/' + user.username + '.jpeg'
                         );
 
                         data.body.pipe(to);
