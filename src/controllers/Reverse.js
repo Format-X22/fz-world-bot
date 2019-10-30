@@ -11,25 +11,22 @@ class Reverse extends Abstract {
     }
 
     async getPage(req, res) {
-        const user = await this.extractUser(req);
-
-        if (user.registeredInReverse) {
-            res.send(this.renderPage('reverse', { registered: true }));
+        if (req.user.registeredInReverse) {
+            res.send(this.renderPage('reverse', { registered: true, user: req.user }));
         } else {
-            res.send(this.renderPage('reverse', { registered: false }));
+            res.send(this.renderPage('reverse', { registered: false, user: req.user }));
         }
     }
 
     async registerReverse(req, res) {
-        const user = await this.extractUser(req);
-
         await global.db
             .collection('users')
-            .updateOne({ _id: user._id }, { $set: { registeredInReverse: true } });
+            .updateOne({ _id: req.user._id }, { $set: { registeredInReverse: true } });
 
         res.send(
             this.renderPage('reverse', {
                 registered: true,
+                user: req.user,
             })
         );
     }

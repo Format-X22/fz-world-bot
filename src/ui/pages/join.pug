@@ -12,7 +12,7 @@ html(lang='ru')
         .container
             .row
                 .col-12
-                    form(action='join' method='POST')
+                    form(action='join?token=' + user.token method='POST')
                         if alreadyActive
                             .card.card-body.text-center
                                 h5.mb-0 Пользователь уже приглашен!
@@ -34,11 +34,11 @@ html(lang='ru')
                         else
                             .input-group.mb-5
                                 input.form-control(
-                                    name='nick'
+                                    name='username'
                                     type='text'
-                                    placeholder='Пригласить по @nickname'
-                                    aria-label='Пригласить по @nickname'
-                                    aria-describedby='Пригласить по @nickname'
+                                    placeholder='Пригласить по @username'
+                                    aria-label='Пригласить по @username'
+                                    aria-describedby='Пригласить по @username'
                                 )
                                 .input-group-append
                                     button.btn.btn-primary(type='submit') Пригласить

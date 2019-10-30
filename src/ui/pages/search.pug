@@ -12,7 +12,7 @@ html(lang='ru')
         .container
             .row
                 .col-12
-                    form(action='search' method='POST')
+                    form(action='search?token=' + user.token method='POST')
                         .input-group.mb-5
                             input.form-control(
                                 type='text'

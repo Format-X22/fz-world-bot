@@ -12,7 +12,7 @@ html(lang='ru')
         .container.mb-5
             .row.justify-content-center
                 .col-10
-                    form(action='reverse' method='POST')
+                    form(action='reverse?token=' + user.token method='POST')
                         p
                             strong.mr-1 Знакомство наоборот
                             span.

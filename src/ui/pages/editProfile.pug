@@ -9,11 +9,34 @@ html(lang='ru')
     body
         +navigation
 
-        .container
+        form.container(action='editProfile?token=' + user.token, method='POST')
             .row.justify-content-center
                 .col-10.text-center
-                    textarea.form-control(rows='3' placeholder='Ваша информация о себе')=description
-                    button.btn.btn-primary.mt-3.mr-3(type='button') Сохранить
-                    a.btn.btn-primary.mt-3(href='profile') Отменить
+                    input.form-control(
+                        name='description'
+                        type='text'
+                        placeholder='О вас'
+                        value=user.description
+                    ).mb-2
+                    input.form-control(
+                        name='job'
+                        type='text'
+                        placeholder='Рабочая сфера'
+                        value=user.job
+                    ).mb-2
+                    input.form-control(
+                        name='family'
+                        type='text'
+                        placeholder='Семейное положение'
+                        value=user.family
+                    ).mb-2
+                    input.form-control(
+                        name='interesting'
+                        type='text'
+                        placeholder='Интересы'
+                        value=user.interesting
+                    ).mb-2
+                    button.btn.btn-primary.mt-3.mr-3(type='submit') Сохранить
+                    a.btn.btn-primary.mt-3(href='profile?token=' + user.token) Отменить
 
         +scripts

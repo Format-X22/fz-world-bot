@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const pug = require('pug');
 const uiPath = __dirname + '/../ui/pages/';
 
@@ -6,27 +7,22 @@ class Abstract {
         return pug.renderFile(`${uiPath}${page}.pug`, data);
     }
 
-    async extractUser(req) {
-        // TODO -
-
-        return { nick: 'oPavlov' };
-    }
-
-    async createUser(nick) {
+    async createUser(username) {
         await global.db.collection('users').insertOne({
-            nick,
+            username,
             requires: 0,
             active: false,
             requiredBy: [],
             registeredInReverse: false,
-            name: '',
+            fullName: '',
             description: '',
             job: '',
             family: '',
             interesting: '',
+            avatar: '',
         });
 
-        return await global.db.collection('users').findOne({ nick });
+        return await global.db.collection('users').findOne({ username });
     }
 }
 

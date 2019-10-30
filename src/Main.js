@@ -1,3 +1,7 @@
+const fetch = require('node-fetch');
+const fs = require('fs');
+const jwt = require('jsonwebtoken');
+const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -39,6 +43,7 @@ class Main {
     async _initWeb() {
         app.use(express.static(__dirname + '/static'));
         app.use(bodyParser.urlencoded({ extended: false }));
+        app.use(this._passUser.bind(this));
 
         app.get('/', this._profileController.getProfilePage.bind(this._profileController));
         app.get('/profile', this._profileController.getProfilePage.bind(this._profileController));
@@ -68,40 +73,83 @@ class Main {
     }
 
     async _initTelegram() {
-
-
-        // TODO -
-
-        const TelegramBot = require('node-telegram-bot-api');
-
         const bot = new TelegramBot(process.env.FZ_BOT_KEY, { polling: true });
 
-        bot.on('message', msg => {
+        bot.on('message', async msg => {
             const chatId = msg.chat.id;
+            const user = await global.db
+                .collection('users')
+                .findOne({ username: msg.from.username });
 
-            /*const chatId = msg.chat.id;
-            var user_profile = bot.getUserProfilePhotos(msg.from.id);
-            user_profile.then(function (res) {
-                var file_id = res.photos[0][0].file_id;
-                var file = bot.getFile(file_id);
-                file.then(function (result) {
-                    var file_path = result.file_path;
-                    var photo_url = `https://api.telegram.org/file/bot${process.env.FZ_BOT_KEY}/${file_path}`
+            if (user && !fs.existsSync(__dirname + '/static/avatar/' + user.username + '.jpg')) {
+                const res = await bot.getUserProfilePhotos(msg.from.id);
+                const file = await bot.getFile(res.photos[0][1].file_id);
+                const path = file.file_path;
+                const key = process.env.FZ_BOT_KEY;
+                const data = await fetch(`https://api.telegram.org/file/bot${key}/${path}`);
+                const to = fs.createWriteStream(
+                    __dirname + '/static/avatar/' + user.username + '.jpg'
+                );
 
-                    console.log(photo_url);
+                data.body.pipe(to);
+            }
 
-                    //bot.sendMessage(chatId, photo_url);
-                });
-            });*/
-
-            bot.sendGame(chatId, 'fzWorldBot');
+            await bot.sendGame(chatId, 'fzWorldBot');
         });
 
-        bot.on('callback_query', function onCallbackQuery(callbackQuery) {
-            bot.answerCallbackQuery(callbackQuery.id, {
-                url: 'http://ec2-13-59-75-149.us-east-2.compute.amazonaws.com',
+        bot.on('callback_query', async callbackQuery => {
+            const token = jwt.sign(callbackQuery.from, process.env.FZ_BOT_KEY);
+
+            await bot.answerCallbackQuery(callbackQuery.id, {
+                url: `http://ec2-13-59-75-149.us-east-2.compute.amazonaws.com/token=${token}`,
             });
         });
+    }
+
+    async _passUser(req, res, next) {
+        const user = await this._extractUser(req);
+
+        if (user) {
+            req.user = user;
+        } else if (
+            [
+                '/',
+                '/profile',
+                '/editProfile',
+                '/join',
+                '/search',
+                '/chats',
+                '/reverse',
+                '/about',
+            ].includes(req.path)
+        ) {
+            res.redirect('unregistered');
+        }
+
+        next();
+    }
+
+    async _extractUser(req) {
+        const token = req.query.token;
+        let rawUser;
+
+        if (!token) {
+            return null;
+        }
+
+        try {
+            rawUser = jwt.verify(token, process.env.FZ_BOT_KEY);
+        } catch (error) {
+            return null;
+        }
+
+        const user = await global.db.collection('users').findOne({ username: rawUser.username });
+
+        if (user) {
+            return { ...user, token };
+        } else {
+            return null;
+        }
     }
 }
 

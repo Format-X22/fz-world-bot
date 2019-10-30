@@ -29,7 +29,7 @@ html(lang='ru')
                         .card.card-body
                             p.text-center.mb-0 Ссылка отправлена вам в сообщении...
         else
-            form.container.mb-5(action='chats' method='POST')
+            form.container.mb-5(action='chats?token=' + user.token method='POST')
                 .row
                     .col-12.text-center
                         h2 Список чатов

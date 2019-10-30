@@ -12,39 +12,45 @@ html(lang='ru')
         .container.mb-5
             .row
                 .col-12.text-center
-                    img.card.card-img.mb-4(src='https://api.telegram.org/file/bot883991044:AAEymEzgxuDvyaH_EuC-QYzpJxvF5B8KpMs/photos/file_0.jpg' style='max-width: 256px; max-height: 256px; display: inline-block;')
-                    h5 #{name}
-                    p.mb-3 #{nick}
-                    p #{description}
+                    img.card.card-img.mb-4(src='avatar/' + user.username + '.jpg' style='max-width: 256px; max-height: 256px; display: inline-block;')
+                    h5 #{user.fullName}
+                    p.mb-3 #{user.username}
+
+                    if user.description
+                        p #{user.description}
 
             hr
 
-            .row.mb-2
-                .col-6.text-right
-                    strong Место работы
-                .col-6.text-left
-                    span #{job}
+            if user.job
+                .row.mb-2
+                    .col-6.text-right
+                        strong Рабочая сфера
+                    .col-6.text-left
+                        span #{user.job}
 
-            .row.mb-2
-                .col-6.text-right
-                    strong Семейное положение
-                .col-6.text-left
-                    span #{family}
+            if user.family
+                .row.mb-2
+                    .col-6.text-right
+                        strong Семейное положение
+                    .col-6.text-left
+                        span #{user.family}
 
-            .row.mb-2
-                .col-6.text-right
-                    strong Интересы
-                .col-6.text-left
-                    span #{interesting}
+            if user.interesting
+                .row.mb-2
+                    .col-6.text-right
+                        strong Интересы
+                    .col-6.text-left
+                        span #{user.interesting}
 
             hr.mb-4
 
-            .row.justify-content-center.mt-1.d-none
-                .col-6.text-center
-                    a.btn.btn-primary.btn-sm(href='editProfile') Редактировать
-
-            .row.justify-content-center
-                .col-6.text-center
-                    a.btn.btn-primary(href='#') Написать
+            if isCurrentUser
+                .row.justify-content-center.mt-1
+                    .col-6.text-center
+                        a.btn.btn-primary.btn-sm(href='editProfile?token=' + user.token) Редактировать
+            else
+                .row.justify-content-center
+                    .col-6.text-center
+                        a.btn.btn-primary(href='#') Написать
                     
         +scripts

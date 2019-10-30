@@ -3,17 +3,18 @@ mixin navigation
         a.navbar-brand(href='#') Мир друзей
         button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Открыть меню')
             span.navbar-toggler-icon
-        #navbarSupportedContent.collapse.navbar-collapse
-            ul.navbar-nav.mr-auto
-                li.nav-item
-                    a.nav-link(href='profile') Профиль
-                li.nav-item
-                    a.nav-link(href='search') Поиск
-                li.nav-item
-                    a.nav-link(href='chats') Список чатов
-                li.nav-item
-                    a.nav-link(href='reverse') Знакомство наоборот
-                li.nav-item
-                    a.nav-link(href='join') Пригласить в приложение
-                li.nav-item
-                    a.nav-link(href='about') О приложении    
+        if user
+            #navbarSupportedContent.collapse.navbar-collapse
+                ul.navbar-nav.mr-auto
+                    li.nav-item
+                        a.nav-link(href!='profile?token=' + user.token) Профиль
+                    li.nav-item
+                        a.nav-link(href!='search?token=' + user.token) Поиск
+                    li.nav-item
+                        a.nav-link(href!='chats?token=' + user.token) Список чатов
+                    li.nav-item
+                        a.nav-link(href!='reverse?token=' + user.token) Знакомство наоборот
+                    li.nav-item
+                        a.nav-link(href!='join?token=' + user.token) Пригласить в приложение
+                    li.nav-item
+                        a.nav-link(href!='about?token=' + user.token) О приложении
