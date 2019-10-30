@@ -119,7 +119,7 @@ class Main {
     async _passUser(req, res, next) {
         const user = await this._extractUser(req);
 
-        if (user) {
+        if (user && user.active) {
             req.user = user;
         } else if (
             [
