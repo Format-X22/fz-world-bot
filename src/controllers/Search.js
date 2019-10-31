@@ -14,12 +14,12 @@ class Search extends Abstract {
         if (search) {
             result = await global.db
                 .collection('users')
-                .find({ $text: { $search: search } }, { skip, limit })
+                .find({ $text: { $search: search }, active: true }, { skip, limit })
                 .toArray();
         } else {
             result = await global.db
                 .collection('users')
-                .find({}, { skip, limit })
+                .find({ active: true }, { skip, limit })
                 .toArray();
         }
 

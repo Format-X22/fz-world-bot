@@ -16,7 +16,12 @@ class Profile extends Abstract {
             return;
         }
 
-        res.send(this.renderPage('profile', { user, isCurrentUser: false }));
+        res.send(
+            this.renderPage('profile', {
+                user: { ...user, token: req.user.token },
+                isCurrentUser: false,
+            })
+        );
     }
 
     async getEditPage(req, res) {
