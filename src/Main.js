@@ -81,14 +81,14 @@ class Main {
         bot.on('message', async msg => {
             const chatId = msg.chat.id;
 
-            await this._parseAvatar(msg);
+            await this._parseAvatar(bot, msg);
             await bot.sendGame(chatId, 'fzWorldBot');
         });
 
         bot.on('callback_query', async callbackQuery => {
             const token = jwt.sign(callbackQuery.from, process.env.FZ_BOT_KEY);
 
-            await this._parseAvatar(callbackQuery);
+            await this._parseAvatar(bot, callbackQuery);
             await bot.answerCallbackQuery(callbackQuery.id, {
                 url: `http://ec2-13-59-75-149.us-east-2.compute.amazonaws.com/?token=${token}`,
             });
@@ -162,7 +162,7 @@ class Main {
         }
     }
 
-    async _parseAvatar(msg) {
+    async _parseAvatar(bot, msg) {
         const user = await global.db.collection('users').findOne({ username: msg.from.username });
 
         if (user) {
