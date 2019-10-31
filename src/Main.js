@@ -39,6 +39,8 @@ class Main {
         );
 
         global.db = client.db(process.env.FZ_DB_NAME || 'admin');
+        
+        global.db.collection('users').createIndex({ '$**': 'text' });
     }
 
     async _initWeb() {
@@ -78,41 +80,15 @@ class Main {
 
         bot.on('message', async msg => {
             const chatId = msg.chat.id;
-            const user = await global.db
-                .collection('users')
-                .findOne({ username: msg.from.username });
 
-            if (user) {
-                if (!fs.existsSync(__dirname + '/static/avatar/' + user.username + '.jpeg')) {
-                    const res = await bot.getUserProfilePhotos(msg.from.id);
-
-                    if (res.photos.length) {
-                        const file = await bot.getFile(res.photos[0][1].file_id);
-                        const path = file.file_path;
-                        const key = process.env.FZ_BOT_KEY;
-                        const data = await fetch(`https://api.telegram.org/file/bot${key}/${path}`);
-                        const to = fs.createWriteStream(
-                            __dirname + '/static/avatar/' + user.username + '.jpeg'
-                        );
-
-                        data.body.pipe(to);
-                    }
-                }
-
-                await global.db
-                    .collection('users')
-                    .updateOne(
-                        { username: msg.from.username },
-                        { $set: { fullName: [msg.from.first_name, msg.from.last_name].join(' ') } }
-                    );
-            }
-
+            await this._parseAvatar(msg);
             await bot.sendGame(chatId, 'fzWorldBot');
         });
 
         bot.on('callback_query', async callbackQuery => {
             const token = jwt.sign(callbackQuery.from, process.env.FZ_BOT_KEY);
 
+            await this._parseAvatar(callbackQuery);
             await bot.answerCallbackQuery(callbackQuery.id, {
                 url: `http://ec2-13-59-75-149.us-east-2.compute.amazonaws.com/?token=${token}`,
             });
@@ -183,6 +159,35 @@ class Main {
                 interesting: '',
                 avatar: '',
             });
+        }
+    }
+
+    async _parseAvatar(msg) {
+        const user = await global.db.collection('users').findOne({ username: msg.from.username });
+
+        if (user) {
+            if (!fs.existsSync(__dirname + '/static/avatar/' + user.username + '.jpeg')) {
+                const res = await bot.getUserProfilePhotos(msg.from.id);
+
+                if (res.photos.length) {
+                    const file = await bot.getFile(res.photos[0][1].file_id);
+                    const path = file.file_path;
+                    const key = process.env.FZ_BOT_KEY;
+                    const data = await fetch(`https://api.telegram.org/file/bot${key}/${path}`);
+                    const to = fs.createWriteStream(
+                        __dirname + '/static/avatar/' + user.username + '.jpeg'
+                    );
+
+                    data.body.pipe(to);
+                }
+            }
+
+            await global.db
+                .collection('users')
+                .updateOne(
+                    { username: msg.from.username },
+                    { $set: { fullName: [msg.from.first_name, msg.from.last_name].join(' ') } }
+                );
         }
     }
 }

@@ -12,92 +12,55 @@ html(lang='ru')
         .container
             .row
                 .col-12
-                    form(action='search?token=' + user.token method='POST')
+                    form(
+                        action='search?token=' + user.token
+                        method='POST'
+                    )
                         .input-group.mb-5
                             input.form-control(
+                                name='search'
                                 type='text'
                                 placeholder='Поиск по профилям'
                                 aria-label='Поиск по профилям'
                                 aria-describedby='Поиск по профилям'
+                                value=search
                             )
+                            input(type='hidden' name='skip' value=0)
+                            input(type='hidden' name='limit' value=20)
                             .input-group-append
-                                button.btn.btn-primary(name='search' type='search') Найти
+                                button.btn.btn-primary(type='submit') Найти
 
-        .container.d-none
-            .row
-                .col-3
-                    img.card.card-img.mb-1(src='https://specials-images.forbesimg.com/imageserve/5b8576db31358e0429c734e3/416x416.jpg?background=000000&cropX1=211&cropX2=2381&cropY1=900&cropY2=3072' style='max-width: 64px; max-height: 64px; display: inline-block;')
-                .col-6
-                    h5 Steve Jobs
-                    p.mb-3 @steveJobs
-                .col-3.text-right.align-self-center
-                    button.btn.btn-primary(type='button') >>
+                    if !result
+                        p: i Можно даже найти эксперта в какой-то области, который вам поможет. Ну или просто друзей.
 
-            .row
-                .col-3
-                    img.card.card-img.mb-1(src='https://specials-images.forbesimg.com/imageserve/5b8576db31358e0429c734e3/416x416.jpg?background=000000&cropX1=211&cropX2=2381&cropY1=900&cropY2=3072' style='max-width: 64px; max-height: 64px; display: inline-block;')
-                .col-6
-                    h5 Steve Jobs
-                    p.mb-3 @steveJobs
-                .col-3.text-right.align-self-center
-                    button.btn.btn-primary(type='button') >>
+                    if result && result.length === 0
+                        p: i Похоже ничего не найдено, попробуйте иначе...
 
-            .row
-                .col-3
-                    img.card.card-img.mb-1(src='https://specials-images.forbesimg.com/imageserve/5b8576db31358e0429c734e3/416x416.jpg?background=000000&cropX1=211&cropX2=2381&cropY1=900&cropY2=3072' style='max-width: 64px; max-height: 64px; display: inline-block;')
-                .col-6
-                    h5 Steve Jobs
-                    p.mb-3 @steveJobs
-                .col-3.text-right.align-self-center
-                    button.btn.btn-primary(type='button') >>
+        .container
+            if result
+                for person in result
+                    .row
+                        .col-3
+                            img.card.card-img.mb-1(
+                                src='avatar/' + person.username + '.jpeg'
+                                style='min-width: 64px; min-height: 64px; max-width: 64px; max-height: 64px; display: inline-block;'
+                            )
+                        .col-6
+                            h5=person.fullName
+                            p.mb-3 @#{person.username}
+                        .col-3.text-right.align-self-top
+                            a.btn.btn-primary(href='profile?username=' + person.username + '&token=' + user.token) >>
 
-            .row
-                .col-3
-                    img.card.card-img.mb-1(src='https://specials-images.forbesimg.com/imageserve/5b8576db31358e0429c734e3/416x416.jpg?background=000000&cropX1=211&cropX2=2381&cropY1=900&cropY2=3072' style='max-width: 64px; max-height: 64px; display: inline-block;')
-                .col-6
-                    h5 Steve Jobs
-                    p.mb-3 @steveJobs
-                .col-3.text-right.align-self-center
-                    button.btn.btn-primary(type='button') >>
-
-            .row
-                .col-3
-                    img.card.card-img.mb-1(src='https://specials-images.forbesimg.com/imageserve/5b8576db31358e0429c734e3/416x416.jpg?background=000000&cropX1=211&cropX2=2381&cropY1=900&cropY2=3072' style='max-width: 64px; max-height: 64px; display: inline-block;')
-                .col-6
-                    h5 Steve Jobs
-                    p.mb-3 @steveJobs
-                .col-3.text-right.align-self-center
-                    button.btn.btn-primary(type='button') >>
-
-            .row
-                .col-3
-                    img.card.card-img.mb-1(src='https://specials-images.forbesimg.com/imageserve/5b8576db31358e0429c734e3/416x416.jpg?background=000000&cropX1=211&cropX2=2381&cropY1=900&cropY2=3072' style='max-width: 64px; max-height: 64px; display: inline-block;')
-                .col-6
-                    h5 Steve Jobs
-                    p.mb-3 @steveJobs
-                .col-3.text-right.align-self-center
-                    button.btn.btn-primary(type='button') >>
-
-            .row
-                .col-3
-                    img.card.card-img.mb-1(src='https://specials-images.forbesimg.com/imageserve/5b8576db31358e0429c734e3/416x416.jpg?background=000000&cropX1=211&cropX2=2381&cropY1=900&cropY2=3072' style='max-width: 64px; max-height: 64px; display: inline-block;')
-                .col-6
-                    h5 Steve Jobs
-                    p.mb-3 @steveJobs
-                .col-3.text-right.align-self-center
-                    button.btn.btn-primary(type='button') >>
-
-            .row
-                .col-3
-                    img.card.card-img.mb-1(src='https://specials-images.forbesimg.com/imageserve/5b8576db31358e0429c734e3/416x416.jpg?background=000000&cropX1=211&cropX2=2381&cropY1=900&cropY2=3072' style='max-width: 64px; max-height: 64px; display: inline-block;')
-                .col-6
-                    h5 Steve Jobs
-                    p.mb-3 @steveJobs
-                .col-3.text-right.align-self-center
-                    button.btn.btn-primary(type='button') >>
-
-            .row.mb-5.mt-5
-                .col-12.text-center
-                    button.btn.btn-primary(type='button') Найти ещё
+            if result && result.length > 0
+                .row.mb-5.mt-5
+                    .col-12.text-center
+                        form(
+                            action='search?token=' + user.token
+                            method='POST'
+                        )
+                            input(type='hidden' name='skip' value=skip + 20)
+                            input(type='hidden' name='limit' value=limit)
+                            input(type='hidden' name='search' value=search)
+                            button.btn.btn-primary(type='submit') Найти ещё
 
         +scripts
