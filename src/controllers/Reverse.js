@@ -46,6 +46,8 @@ class Reverse extends Abstract {
         const users = await global.db.collection('users').find({ registeredInReverse: true });
 
         if (!users.length) {
+            console.log('Empty registers!', users);
+
             return;
         }
 
@@ -76,6 +78,8 @@ class Reverse extends Abstract {
             await global.db
                 .collection('users')
                 .updateOne({ username: right.username }, { $set: { registeredInReverse: false } });
+
+            left = null;
         }
     }
 

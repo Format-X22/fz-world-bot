@@ -199,19 +199,16 @@ class Main {
                 if (path) {
                     const key = process.env.FZ_BOT_KEY;
 
-                    cloudinary.uploader.upload(
-                        `https://api.telegram.org/file/bot${key}/${path}`,
-                        async (err, result) => {
-                            if (result) {
-                                await global.db.collection('users').updateOne(
-                                    { username: msg.from.username },
-                                    {
-                                        $set: {
-                                            avatar: result.url,
-                                        },
-                                    }
-                                );
-                            }
+                    const result = await cloudinary.uploader.upload(
+                        `https://api.telegram.org/file/bot${key}/${path}`
+                    );
+
+                    await global.db.collection('users').updateOne(
+                        { username: msg.from.username },
+                        {
+                            $set: {
+                                avatar: result.url,
+                            },
                         }
                     );
                 }
