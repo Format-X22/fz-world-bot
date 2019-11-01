@@ -1,5 +1,5 @@
+const cloudinary = require('cloudinary').v2;
 const fetch = require('node-fetch');
-const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
@@ -14,6 +14,12 @@ const ReverseController = require('./controllers/Reverse');
 const SearchController = require('./controllers/Search');
 const AboutController = require('./controllers/About');
 const UnregisteredController = require('./controllers/Unregistered');
+
+cloudinary.config({
+    cloud_name: 'dqb0ab8py',
+    api_key: '851838634674731',
+    api_secret: process.env.FZ_CLOUDINARY_KEY,
+});
 
 class Main {
     constructor() {
@@ -179,26 +185,31 @@ class Main {
     async _parseAvatar(bot, msg) {
         const user = await global.db.collection('users').findOne({ username: msg.from.username });
 
-        if (user) {
-            if (!fs.existsSync(__dirname + '/static/avatar/' + user.username + '.jpeg')) {
-                const res = await bot.getUserProfilePhotos(msg.from.id);
+        if (user && !user.avatar) {
+            const res = await bot.getUserProfilePhotos(msg.from.id);
 
-                if (res.photos.length && res.photos[0][1].file_id) {
-                    const file = await bot.getFile(res.photos[0][1].file_id);
-                    const path = file.file_path;
+            if (res.photos.length && res.photos[0][1].file_id) {
+                const file = await bot.getFile(res.photos[0][1].file_id);
+                const path = file.file_path;
 
-                    if (path) {
-                        const key = process.env.FZ_BOT_KEY;
-                        const data = await fetch(`https://api.telegram.org/file/bot${key}/${path}`);
+                if (path) {
+                    const key = process.env.FZ_BOT_KEY;
 
-                        if (data) {
-                            const to = fs.createWriteStream(
-                                __dirname + '/static/avatar/' + user.username + '.jpeg'
-                            );
-
-                            data.body.pipe(to);
+                    cloudinary.uploader.upload(
+                        `https://api.telegram.org/file/bot${key}/${path}`,
+                        async (err, result) => {
+                            if (result) {
+                                await global.db.collection('users').updateOne(
+                                    { username: msg.from.username },
+                                    {
+                                        $set: {
+                                            avatar: result.url,
+                                        },
+                                    }
+                                );
+                            }
                         }
-                    }
+                    );
                 }
             }
 

@@ -42,7 +42,7 @@ html(lang='ru')
                     .row
                         .col-3
                             img.card.card-img.mb-1(
-                                src='avatar/' + person.username + '.jpeg'
+                                src!=person.avatar
                                 style='min-width: 64px; min-height: 64px; max-width: 64px; max-height: 64px; display: inline-block;'
                                 onerror='this.src = "./default-avatar.jpg";'
                             )
