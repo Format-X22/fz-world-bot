@@ -32,7 +32,9 @@ class Reverse extends Abstract {
     }
 
     _startMatchLoop() {
-        this._match().catch(error => console.log(error));
+        setTimeout(() => {
+            this._match().catch(error => console.log(error));
+        }, 10000);
 
         setTimeout(() => {
             this._match().catch(error => console.log(error));
@@ -50,6 +52,10 @@ class Reverse extends Abstract {
         let left = null;
 
         for (const user of users) {
+            if (!user.tgUserId) {
+                continue;
+            }
+
             if (!left) {
                 left = user;
                 continue;
