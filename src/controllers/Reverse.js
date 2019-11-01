@@ -43,7 +43,7 @@ class Reverse extends Abstract {
     }
 
     async _match() {
-        const users = await global.db.collection('users').find({ registeredInReverse: true });
+        const users = await global.db.collection('users').find({ registeredInReverse: true }).toArray();
 
         if (!users.length) {
             console.log('Empty registers!', users);
