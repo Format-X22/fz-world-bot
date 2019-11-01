@@ -39,7 +39,7 @@ class Main {
         );
 
         global.db = client.db(process.env.FZ_DB_NAME || 'admin');
-        
+
         global.db.collection('users').createIndex({ '$**': 'text' });
     }
 
@@ -76,6 +76,7 @@ class Main {
     }
 
     async _initTelegram() {
+        return;
         const bot = new TelegramBot(process.env.FZ_BOT_KEY, { polling: true });
 
         bot.on('message', async msg => {
@@ -169,16 +170,22 @@ class Main {
             if (!fs.existsSync(__dirname + '/static/avatar/' + user.username + '.jpeg')) {
                 const res = await bot.getUserProfilePhotos(msg.from.id);
 
-                if (res.photos.length) {
+                if (res.photos.length && res.photos[0][1].file_id) {
                     const file = await bot.getFile(res.photos[0][1].file_id);
                     const path = file.file_path;
-                    const key = process.env.FZ_BOT_KEY;
-                    const data = await fetch(`https://api.telegram.org/file/bot${key}/${path}`);
-                    const to = fs.createWriteStream(
-                        __dirname + '/static/avatar/' + user.username + '.jpeg'
-                    );
 
-                    data.body.pipe(to);
+                    if (path) {
+                        const key = process.env.FZ_BOT_KEY;
+                        const data = await fetch(`https://api.telegram.org/file/bot${key}/${path}`);
+
+                        if (data) {
+                            const to = fs.createWriteStream(
+                                __dirname + '/static/avatar/' + user.username + '.jpeg'
+                            );
+
+                            data.body.pipe(to);
+                        }
+                    }
                 }
             }
 

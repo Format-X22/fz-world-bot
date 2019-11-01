@@ -12,7 +12,11 @@ html(lang='ru')
         .container.mb-5
             .row
                 .col-12.text-center
-                    img.card.card-img.mb-4(src='avatar/' + user.username + '.jpeg' style='min-width: 64px; min-height: 64px; max-width: 256px; max-height: 256px; display: inline-block;')
+                    img.card.card-img.mb-4(
+                        src='avatar/' + user.username + '.jpeg'
+                        style='min-width: 64px; min-height: 64px; max-width: 256px; max-height: 256px; display: inline-block;'
+                        onerror='this.src = "./default-avatar.jpg";'
+                    )
                     h5 #{user.fullName}
                     p.mb-3 @#{user.username}
 

@@ -44,6 +44,7 @@ html(lang='ru')
                             img.card.card-img.mb-1(
                                 src='avatar/' + person.username + '.jpeg'
                                 style='min-width: 64px; min-height: 64px; max-width: 64px; max-height: 64px; display: inline-block;'
+                                onerror='this.src = "./default-avatar.jpg";'
                             )
                         .col-6
                             h5=person.fullName

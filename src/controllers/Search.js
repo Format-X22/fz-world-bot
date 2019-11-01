@@ -6,16 +6,23 @@ class Search extends Abstract {
     }
 
     async search(req, res) {
-        const search = req.body.search;
+        const search = req.body.search.trim();
         const skip = +req.body.skip || 0;
         const limit = +req.body.limit || 20;
         let result;
 
         if (search) {
-            result = await global.db
-                .collection('users')
-                .find({ $text: { $search: search }, active: true }, { skip, limit })
-                .toArray();
+            if (search[0] === '@') {
+                result = await global.db
+                    .collection('users')
+                    .find({ username: search.slice(1), active: true }, { skip, limit })
+                    .toArray();
+            } else {
+                result = await global.db
+                    .collection('users')
+                    .find({ $text: { $search: search }, active: true }, { skip, limit })
+                    .toArray();
+            }
         } else {
             result = await global.db
                 .collection('users')
