@@ -53,6 +53,7 @@ class Reverse extends Abstract {
 
         for (const user of users) {
             if (!user.tgUserId) {
+                console.log(`${JSON.stringify(user)} - unknown tgUserId`);
                 continue;
             }
 
@@ -63,6 +64,8 @@ class Reverse extends Abstract {
 
             const right = user;
             const message = 'А вот и ваш напарник по знакомству наоборот! Напишите ему! Ник - ';
+
+            console.log(`PAIR - ${left.username} + ${right.username}`);
 
             global.bot.sendMessage(left.tgUserId, message + '@' + right.username);
             global.bot.sendMessage(right.tgUserId, message + '@' + left.username);

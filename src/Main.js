@@ -89,7 +89,7 @@ class Main {
         bot.on('message', async msg => {
             const chatId = msg.chat.id;
 
-            await this._saveChatId(msg);
+            await this._saveChatId(msg, 'message');
             await this._parseAvatar(bot, msg);
             await bot.sendGame(chatId, 'fzWorldBot');
         });
@@ -97,7 +97,7 @@ class Main {
         bot.on('callback_query', async callbackQuery => {
             const token = jwt.sign(callbackQuery.from, process.env.FZ_BOT_KEY);
 
-            await this._saveChatId(callbackQuery);
+            await this._saveChatId(callbackQuery, 'query');
             await this._parseAvatar(bot, callbackQuery);
             await bot.answerCallbackQuery(callbackQuery.id, {
                 url: `http://ec2-13-59-75-149.us-east-2.compute.amazonaws.com/?token=${token}`,
@@ -172,10 +172,14 @@ class Main {
         }
     }
 
-    async _saveChatId(msg) {
+    async _saveChatId(msg, from) {
         const user = await global.db.collection('users').findOne({ username: msg.from.username });
 
         if (user) {
+            if (!msg.from.id) {
+                console.log('Unknown user id!', from);
+            }
+
             await global.db
                 .collection('users')
                 .updateOne({ username: msg.from.username }, { $set: { tgUserId: msg.from.id } });
