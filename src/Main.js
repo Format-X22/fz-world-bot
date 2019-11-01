@@ -172,7 +172,7 @@ class Main {
         if (user) {
             await global.db
                 .collection('users')
-                .updateOne({ username: msg.from.username }, { tgUserId: msg.from.id });
+                .updateOne({ username: msg.from.username }, { $set: { tgUserId: msg.from.id } });
         }
     }
 
