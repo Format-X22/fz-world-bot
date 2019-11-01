@@ -76,12 +76,14 @@ class Main {
     }
 
     async _initTelegram() {
-        return;
         const bot = new TelegramBot(process.env.FZ_BOT_KEY, { polling: true });
+
+        global.bot = bot;
 
         bot.on('message', async msg => {
             const chatId = msg.chat.id;
 
+            await this._saveChatId(msg);
             await this._parseAvatar(bot, msg);
             await bot.sendGame(chatId, 'fzWorldBot');
         });
@@ -89,6 +91,7 @@ class Main {
         bot.on('callback_query', async callbackQuery => {
             const token = jwt.sign(callbackQuery.from, process.env.FZ_BOT_KEY);
 
+            await this._saveChatId(callbackQuery);
             await this._parseAvatar(bot, callbackQuery);
             await bot.answerCallbackQuery(callbackQuery.id, {
                 url: `http://ec2-13-59-75-149.us-east-2.compute.amazonaws.com/?token=${token}`,
@@ -137,7 +140,7 @@ class Main {
         const user = await global.db.collection('users').findOne({ username: rawUser.username });
 
         if (user) {
-            return { ...user, token };
+            return { ...user, token, tgUserId: rawUser.id };
         } else {
             return null;
         }
@@ -160,6 +163,16 @@ class Main {
                 interesting: '',
                 avatar: '',
             });
+        }
+    }
+
+    async _saveChatId(msg) {
+        const user = await global.db.collection('users').findOne({ username: msg.from.username });
+
+        if (user) {
+            await global.db
+                .collection('users')
+                .updateOne({ username: msg.from.username }, { tgUserId: msg.from.id });
         }
     }
 
@@ -189,12 +202,14 @@ class Main {
                 }
             }
 
-            await global.db
-                .collection('users')
-                .updateOne(
-                    { username: msg.from.username },
-                    { $set: { fullName: [msg.from.first_name, msg.from.last_name].join(' ') } }
-                );
+            await global.db.collection('users').updateOne(
+                { username: msg.from.username },
+                {
+                    $set: {
+                        fullName: [msg.from.first_name, msg.from.last_name].join(' '),
+                    },
+                }
+            );
         }
     }
 }

@@ -6,7 +6,11 @@ class Chats extends Abstract {
     }
 
     async sendLink(req, res) {
-        // TODO -
+        global.bot.sendMessage(
+            req.user.tgUserId,
+            `Ваша ссылка на чат "${req.body.name}" - ${req.body.link}`
+        );
+
         res.send(this.renderPage('chats', { send: true, user: req.user }));
     }
 }

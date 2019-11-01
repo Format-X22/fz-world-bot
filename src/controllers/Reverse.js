@@ -32,6 +32,8 @@ class Reverse extends Abstract {
     }
 
     _startMatchLoop() {
+        this._match().catch(error => console.log(error));
+
         setTimeout(() => {
             this._match().catch(error => console.log(error));
             this._startMatchLoop();
@@ -53,10 +55,19 @@ class Reverse extends Abstract {
                 continue;
             }
 
-            // TODO Pair
-        }
+            const right = user;
+            const message = 'А вот и ваш напарник по знакомству наоборот! Напишите ему! Ник - ';
 
-        // TODO Broadcast
+            global.bot.sendMessage(left.tgUserId, message + '@' + right.username);
+            global.bot.sendMessage(right.tgUserId, message + '@' + left.username);
+
+            await global.db
+                .collection('users')
+                .updateOne({ username: left.username }, { $set: { registeredInReverse: false } });
+            await global.db
+                .collection('users')
+                .updateOne({ username: right.username }, { $set: { registeredInReverse: false } });
+        }
     }
 
     _remainedToNextDay() {
