@@ -13,6 +13,15 @@ class Chats extends Abstract {
 
         res.send(this.renderPage('chats', { send: true, user: req.user }));
     }
+
+    async writeTo(req, res) {
+        global.bot.sendMessage(
+            req.user.tgUserId,
+            `Ваша ссылка на личный чат c @${req.query.username} - tg://resolve?domain=${req.query.username}`
+        );
+
+        res.send(this.renderPage('chats', { send: true, user: req.user }));
+    }
 }
 
 module.exports = Chats;

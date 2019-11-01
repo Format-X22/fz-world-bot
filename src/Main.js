@@ -67,6 +67,7 @@ class Main {
 
         app.get('/chats', this._chatsController.getPage.bind(this._chatsController));
         app.post('/chats', this._chatsController.sendLink.bind(this._chatsController));
+        app.post('/writeTo', this._chatsController.writeTo.bind(this._chatsController));
 
         app.get('/reverse', this._reverseController.getPage.bind(this._reverseController));
         app.post('/reverse', this._reverseController.registerReverse.bind(this._reverseController));

@@ -2,6 +2,8 @@ include ../elements/meta
 include ../elements/scripts
 include ../elements/navigation
 
+- const DEFAULT_LIMIT = 100;
+
 doctype html
 html(lang='ru')
     head
@@ -26,7 +28,7 @@ html(lang='ru')
                                 value=search
                             )
                             input(type='hidden' name='skip' value=0)
-                            input(type='hidden' name='limit' value=20)
+                            input(type='hidden' name='limit' value=DEFAULT_LIMIT)
                             .input-group-append
                                 button.btn.btn-primary(type='submit') Найти
 
@@ -52,16 +54,17 @@ html(lang='ru')
                         .col-3.text-right.align-self-top
                             a.btn.btn-primary(href='profile?username=' + person.username + '&token=' + user.token) >>
 
-            if result && result.length > 0
-                .row.mb-5.mt-5
-                    .col-12.text-center
-                        form(
-                            action='search?token=' + user.token
-                            method='POST'
-                        )
-                            input(type='hidden' name='skip' value=skip + 20)
-                            input(type='hidden' name='limit' value=limit)
-                            input(type='hidden' name='search' value=search)
-                            button.btn.btn-primary(type='submit') Найти ещё
+            // Пока поиск по всему что есть
+                if result && result.length > 0
+                    .row.mb-5.mt-5
+                        .col-12.text-center
+                            form(
+                                action='search?token=' + user.token
+                                method='POST'
+                            )
+                                input(type='hidden' name='skip' value=skip + DEFAULT_LIMIT)
+                                input(type='hidden' name='limit' value=limit)
+                                input(type='hidden' name='search' value=search)
+                                button.btn.btn-primary(type='submit') Найти ещё
 
         +scripts
