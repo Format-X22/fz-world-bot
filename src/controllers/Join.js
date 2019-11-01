@@ -26,8 +26,21 @@ class Join extends Abstract {
         }
 
         if (user.active) {
+            if (user.tgUserId) {
+                global.bot.sendMessage(
+                    user.tgUserId,
+                    `Пользователь @${currentUser.username} пригласил вас! У вас уже 3 приглашения, теперь вы можете войти в приложение!`
+                );
+            }
+
             res.send(this.renderPage('join', { alreadyActive: true, user: req.user }));
             return;
+        } else {
+            global.bot.sendMessage(
+                user.tgUserId,
+                `Пользователь @${currentUser.username} пригласил вас! Вам нужно ещё ${3 -
+                    (user.requires + 1)} приглашений...`
+            );
         }
 
         if (user.requiredBy.includes(currentUser.username) && currentUser.username !== 'oPavlov') {

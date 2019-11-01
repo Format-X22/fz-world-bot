@@ -184,6 +184,21 @@ class Main {
             await global.db
                 .collection('users')
                 .updateOne({ username: msg.from.username }, { $set: { tgUserId: msg.from.id } });
+        } else {
+            await global.db.collection('users').insertOne({
+                username: msg.from.username,
+                tgUserId: msg.from.id,
+                requires: 0,
+                active: false,
+                requiredBy: [],
+                registeredInReverse: false,
+                fullName: '',
+                description: '',
+                job: '',
+                family: '',
+                interesting: '',
+                avatar: '',
+            });
         }
     }
 
