@@ -27,6 +27,7 @@ cloudinary.config({
 class Main {
     constructor() {
         this._chatsController = new ChatsController();
+        this._eventsController = new EventsController();
         this._joinController = new JoinController();
         this._profileController = new ProfileController();
         this._reverseController = new ReverseController();
