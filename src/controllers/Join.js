@@ -30,15 +30,15 @@ class Join extends Abstract {
             return;
         } else {
             if (user.tgUserId) {
-                if (user.requires + 1 === 2) {
+                if (user.requires + 1 === 1) {
                     global.bot.sendMessage(
                         user.tgUserId,
-                        `@${currentUser.username} пригласил вас! У тебя уже 2 приглашения, теперь ты можешь войти в приложение!`
+                        `@${currentUser.username} пригласил вас! У тебя уже 1 приглашение, теперь ты можешь войти в приложение!`
                     );
                 } else {
                     global.bot.sendMessage(
                         user.tgUserId,
-                        `Пользователь @${currentUser.username} пригласил вас! Вам нужно ещё ${2 -
+                        `Пользователь @${currentUser.username} пригласил вас! Вам нужно ещё ${1 -
                             (user.requires + 1)} приглашений...`
                     );
                 }
@@ -52,7 +52,7 @@ class Join extends Abstract {
 
         const update = { $inc: { requires: 1 }, $addToSet: { requiredBy: currentUser.username } };
 
-        if (user.requires + 1 === 2) {
+        if (user.requires + 1 === 1) {
             update.$set = { active: true };
             active = true;
         }
@@ -63,7 +63,7 @@ class Join extends Abstract {
             this.renderPage('join', {
                 success: true,
                 active,
-                requiresNeeded: 2 - (user.requires + 1),
+                requiresNeeded: 1 - (user.requires + 1),
                 user: req.user,
             })
         );
