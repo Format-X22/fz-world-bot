@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const port = process.env.FZ_PORT || 4000;
 const ChatsController = require('./controllers/Chats');
+const EventsController = require('./controllers/Events');
 const JoinController = require('./controllers/Join');
 const ProfileController = require('./controllers/Profile');
 const ReverseController = require('./controllers/Reverse');
@@ -20,6 +21,8 @@ cloudinary.config({
     api_key: '851838634674731',
     api_secret: process.env.FZ_CLOUDINARY_KEY,
 });
+
+// TODO Кнопка "Назад"
 
 class Main {
     constructor() {
@@ -68,6 +71,8 @@ class Main {
         app.get('/chats', this._chatsController.getPage.bind(this._chatsController));
         app.post('/chats', this._chatsController.sendLink.bind(this._chatsController));
         app.get('/writeTo', this._chatsController.writeTo.bind(this._chatsController));
+
+        app.get('/events', this._eventsController.getPage.bind(this._eventsController));
 
         app.get('/reverse', this._reverseController.getPage.bind(this._reverseController));
         app.post('/reverse', this._reverseController.registerReverse.bind(this._reverseController));

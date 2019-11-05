@@ -9,11 +9,13 @@ mixin navigation
                     li.nav-item
                         a.nav-link(href!='profile?token=' + user.token) Профиль
                     li.nav-item
-                        a.nav-link(href!='search?token=' + user.token) Поиск
+                        a.nav-link(href!='events?token=' + user.token) Ближайшие события
                     li.nav-item
                         a.nav-link(href!='chats?token=' + user.token) Список чатов
                     li.nav-item
                         a.nav-link(href!='reverse?token=' + user.token) Знакомство наоборот
+                    li.nav-item
+                        a.nav-link(href!='search?token=' + user.token) Поиск людей
                     li.nav-item
                         a.nav-link(href!='join?token=' + user.token) Пригласить в приложение
                     li.nav-item
