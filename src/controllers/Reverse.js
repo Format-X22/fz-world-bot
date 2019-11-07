@@ -80,6 +80,8 @@ class Reverse extends Abstract {
 
             left = null;
         }
+
+        console.log(`Reverse done - ${new Date()}`);
     }
 }
 
