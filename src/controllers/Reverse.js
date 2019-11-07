@@ -1,7 +1,4 @@
-const moment = require('moment');
 const Abstract = require('./Abstract');
-
-const MOSCOW_TIME_DIFF = 3;
 
 class Reverse extends Abstract {
     constructor(...args) {
@@ -36,14 +33,16 @@ class Reverse extends Abstract {
             this._match().catch(error => console.log(error));
         }, 10000);
 
-        setTimeout(() => {
+        setInterval(() => {
             this._match().catch(error => console.log(error));
-            this._startMatchLoop();
-        }, this._remainedToNextDay());
+        }, 1000 * 60 * 60);
     }
 
     async _match() {
-        const users = await global.db.collection('users').find({ registeredInReverse: true }).toArray();
+        const users = await global.db
+            .collection('users')
+            .find({ registeredInReverse: true })
+            .toArray();
 
         if (!users.length) {
             console.log('Empty registers!', users);
@@ -81,19 +80,6 @@ class Reverse extends Abstract {
 
             left = null;
         }
-    }
-
-    _remainedToNextDay() {
-        const diff = moment()
-            .utc()
-            .add(MOSCOW_TIME_DIFF * 2, 'hours');
-
-        return moment()
-            .utc()
-            .startOf('day')
-            .hour(MOSCOW_TIME_DIFF)
-            .add(1, 'day')
-            .diff(diff);
     }
 }
 
