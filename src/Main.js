@@ -51,6 +51,17 @@ class Main {
         global.db = client.db(process.env.FZ_DB_NAME || 'admin');
 
         global.db.collection('users').createIndex({ '$**': 'text' });
+
+        console.log(
+            JSON.stringify(
+                await global.db
+                    .collection('users')
+                    .find({})
+                    .toArray(),
+                null,
+                2
+            )
+        );
     }
 
     async _initWeb() {
