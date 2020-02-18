@@ -16,6 +16,8 @@ class Reverse extends Abstract {
     }
 
     async registerReverse(req, res) {
+        console.log('REVERSE', req.user.username);
+
         await global.db
             .collection('users')
             .updateOne({ _id: req.user._id }, { $set: { registeredInReverse: true } });

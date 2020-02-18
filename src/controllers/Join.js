@@ -6,6 +6,8 @@ class Join extends Abstract {
     }
 
     async handleJoin(req, res) {
+        console.log('JOIN', req.user.username);
+
         const currentUser = req.user;
         let username = req.body.username;
         let active = false;
